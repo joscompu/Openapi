@@ -1,0 +1,184 @@
+# Fecha: 24-05-2020
+# Autor: Jose Calderon
+# Description: Se Desea modelar un Api para un sistema de Sales Point.
+
+
+
+#---------------------Version de Openapi--------------------------------
+openapi: 3.0.3
+#-----------------------------------------------------------------------
+
+
+
+
+#--------------------Informacion sobre el Api----------------------------
+info:
+  title: Sales Point
+  description: System to manage your company in the `inventory processes, customers, invoices` and everything quickly and easily.
+  version: 0.0.1
+#-------------------------------------------------------------------------  
+
+
+  
+  
+#---------------------Se indica cuales son los servidores-----------------  
+servers: 
+  - url: http://salespoint.com/v1
+    description: Production Server (Use Data Live)
+  - url: http://salespoint.com:8080/v1
+    description: SandBox Server (Use Data Test)
+#-------------------------------------------------------------------------    
+
+
+#-------------------Se indica cuales son las etiquetas para agrupar-----------
+
+tags: 
+  - name: Customers
+    description: Metodos para manejar todo con customer.
+    
+    
+#-------------------Se indica cuales son las rutas y metodos en el Api------    
+
+
+paths:
+
+#-----------------Metodo Get que devuelve una lista de customers----------------
+  /customer/all:
+    get:
+      summary: Returns a list of Customers.
+      tags: 
+       - Customers
+      description: Prueba
+      responses:
+        '200': # status code
+         description: A Json array of customer names
+         content:
+           application/json:
+             schema:
+              $ref: '#/components/schemas/Customer'
+#----------------------------------------------------------------------------  
+
+
+#----------------Metodo Get que devuelve un customer dado su ID---------------
+                
+  /customer/buscar/{Id}:
+    get:
+      summary: Returns a Customer for Id
+      tags: 
+       - Customers
+      parameters: 
+       - name: Id
+         in: path
+         required: true
+         description: Parametro para buscar customer por Id
+         schema:
+          $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Error 400
+        '404':
+          description: Error 404
+        default:
+          description: Error por defecto
+#----------------------------------------------------------------------
+
+
+#---------------- Metodo POST que crea un customer----------------------
+  /customer/crear:
+    post:
+      summary: Create Customer
+      tags: 
+       - Customers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+             $ref: '#/components/schemas/Customer'
+                 
+      responses:
+        '200':
+          description: Created Customer
+#----------------------------------------------------------------------------     
+
+#------------------Metodo para eliminar un customer dado su ID---------------
+  /customer/delete/{Id}:
+    delete:
+      summary: Delete Customer
+      tags: 
+       - Customers
+      parameters: 
+       - name: Id
+         in: path
+         required: true
+         description: Parametro para eliminar un customer
+         schema:
+           $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: OK
+          
+        '400':
+          description: Error 400
+        '404':
+          description: Error 404
+        default:
+          description: Error por defecto
+      
+
+
+#-------------------Se indca cuales son los Components------------------------
+
+components:
+  schemas:
+    Customer:
+      properties:
+          id:
+            type: integer
+            example: 1
+          name:
+            type: string
+            example: Jose Angel
+          lasName:
+             type: string
+             example: Calderon
+          email:
+             type: string
+             example: joscompu@gmail.com
+          createAt:
+             type: string
+             example: '2020-05-24'
+             
+      required: 
+        - id
+        - name
+        - lasName
+        - email
+        - createAt
+        
+#---------------Seguridad de Api-------------------------------------------
+  securitySchemes:
+    BasicAuth:
+     type: http
+     scheme: basic
+security: 
+  - BasicAuth: []
+        
+#--------------------------------------------------------------------------------        
+                  
+          
+           
+      
+  
+  
+  
+               
+               
+            
+      
